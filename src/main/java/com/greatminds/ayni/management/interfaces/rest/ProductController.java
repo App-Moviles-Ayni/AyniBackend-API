@@ -68,10 +68,20 @@ public class ProductController {
      * @return A list of all products.
      */
     @GetMapping
-    public ResponseEntity<List<ProductResource>> getAllProducts() {
+    public ResponseEntity<List<ProductResource>> getAllProducts(@RequestParam(required = false) String name) {
         var getAllProductsQuery = new GetAllProductsQuery();
         var products = productQueryService.handle(getAllProductsQuery);
-        var profilesResources= products.stream().map(ProductResourceFromEntityAssembler::toResourceFromEntity).collect(Collectors.toList());
+
+        if (name != null && !name.isEmpty()) {
+            products = products.stream()
+                    .filter(product -> product.getName().equalsIgnoreCase(name))
+                    .collect(Collectors.toList());
+        }
+
+        var profilesResources = products.stream()
+                .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
+                .collect(Collectors.toList());
+
         return ResponseEntity.ok(profilesResources);
     }
 

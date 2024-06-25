@@ -62,9 +62,16 @@ public class SaleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SaleResource>> getAllSales() {
+    public ResponseEntity<List<SaleResource>> getAllSales(@RequestParam(required = false) String name) {
         var getAllSalesQuery = new GetAllSalesQuery();
         var sales = saleQueryService.handle(getAllSalesQuery);
+
+        if (name != null && !name.isEmpty()) {
+            sales = sales.stream()
+                    .filter(sale -> sale.getName().contains(name))
+                    .collect(Collectors.toList());
+        }
+
         var salesResources= sales.stream().map(SaleResourceFromEntityAssembler::toResourceFromEntity).collect(Collectors.toList());
         return ResponseEntity.ok(salesResources);
     }
