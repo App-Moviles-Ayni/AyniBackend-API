@@ -15,8 +15,8 @@ public class Transaction extends AbstractAggregateRoot<Transaction> {
     private Long id;
 
     private String costName;
-    private String date;
     private String description;
+    private String date;
     private String transactionType;
     private Double price;
     private String quantity;

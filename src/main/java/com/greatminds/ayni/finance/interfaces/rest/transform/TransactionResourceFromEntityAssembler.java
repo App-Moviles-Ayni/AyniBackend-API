@@ -6,7 +6,7 @@ import com.greatminds.ayni.finance.interfaces.rest.resources.TransactionResource
 public class TransactionResourceFromEntityAssembler {
 
     public static TransactionResource toResourceFromEntity(Transaction entity) {
-        return new TransactionResource(entity.getId(), entity.getCostName(), entity.getDate(), entity.getDescription(),
+        return new TransactionResource(entity.getId(), entity.getCostName(), entity.getDescription(), entity.getDate(),
                 entity.getTransactionType(), entity.getPrice(), entity.getQuantity(), entity.getUserId());
     }
 }
