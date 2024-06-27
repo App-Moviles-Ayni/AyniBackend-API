@@ -68,9 +68,16 @@ public class CropController {
      * @return A list of all crops.
      */
     @GetMapping
-    public ResponseEntity<List<CropResource>> getAllCrops() {
+    public ResponseEntity<List<CropResource>> getAllCrops(@RequestParam(required = false) String name) {
         var getAllCropsQuery = new GetAllCropsQuery();
         var crops = cropQueryService.handle(getAllCropsQuery);
+
+        if (name != null && !name.isEmpty()) {
+            crops = crops.stream()
+                    .filter(crop -> crop.getName().contains(name))
+                    .collect(Collectors.toList());
+        }
+
         var profilesResources= crops.stream().map(CropResourceFromEntityAssembler::toResourceFromEntity).collect(Collectors.toList());
         return ResponseEntity.ok(profilesResources);
     }
